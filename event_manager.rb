@@ -41,9 +41,36 @@ class EventManager
       puts number
     end
   end
+  
+  def print_zipcodes
+     @file.each do |line|
+       zipcode = line[:zipcode]
+       puts zipcode
+     end
+   end
+   
+   def clean_zipcode(original)
+     if original.nil? 
+       result = "00000"
+     end
+       
+      if original.length < 5
+        # Add zeros on the front
+      end
+
+    end
+    
+    def normalize_zip(zip)
+      if zip.length < 5
+        zeros_to_add = 5 - zip.length
+        zeros_to_add.times { zip = "0" << zip }
+      end
+      
+      zip unless zip.length != 5
+    end
 
 end
 
 # Script
 manager = EventManager.new
-manager.print_numbers
+puts manager.normalize_zip("56")
