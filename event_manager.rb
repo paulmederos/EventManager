@@ -3,6 +3,8 @@ require "csv"
 
 # Class Definition
 class EventManager
+  INVALID_ZIPCODE = "00000"
+  
   def initialize
     puts "EventManager Initialized."
     filename = "event_attendees.csv"
@@ -31,7 +33,6 @@ class EventManager
     end
     
     cleaned_number = "0000000000" unless cleaned_number.length == 10
-
     cleaned_number
   end
   
@@ -52,23 +53,20 @@ class EventManager
      # puts "Number of zip codes: " + amount.to_s
    end
    
-   def clean_zipcode(original)
-     if original.nil? 
-       original = "00000"
-     end
-     normalize_zip(original)
+  def clean_zipcode(original)
+    original = EventManager::INVALID_ZIPCODE unless original.nil? 
+    normalize_zip(original)
+  end
+    
+  def normalize_zip(zip)
+    if zip.length < 5
+      (5 - zip.length).times { zip = "0" << zip }
     end
     
-    def normalize_zip(zip)
-      if zip.length < 5
-        (5 - zip.length).times { zip = "0" << zip }
-      end
-      
-      zip unless zip.length != 5
-    end
-
+    zip unless zip.length != 5
+  end
 end
 
-# Script
+# Script to run
 manager = EventManager.new
-puts manager.print_zipcodes
+puts manager.print_numbers
