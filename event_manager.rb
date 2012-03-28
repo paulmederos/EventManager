@@ -5,9 +5,8 @@ require "csv"
 class EventManager
   INVALID_ZIPCODE = "00000"
   
-  def initialize
+  def initialize(filename)
     puts "EventManager Initialized."
-    filename = "event_attendees.csv"
     @file = CSV.open(filename, {:headers => true, :header_converters => :symbol})
   end
   
@@ -65,8 +64,16 @@ class EventManager
     
     zip unless zip.length != 5
   end
+  
+  def output_data(filename)
+     output = CSV.open(filename, "w")
+     @file.each do |line|
+       line[:homephone] = clean_number(line[:homephone])
+       output << line
+     end
+   end
 end
 
 # Script to run
-manager = EventManager.new
-puts manager.print_numbers
+manager = EventManager.new("event_attendees.csv")
+puts manager.output_data("event_attendees_clean.csv")
